@@ -1,0 +1,6 @@
+searchPattern;appName;appEnv;appProject;appType;appHome;appUser;appStart;appStop;appRestart;appCheckType;appCheckMethod
+wjkapi_test;wjkapi;test;wjk;docker;/opt/middleware/docker_wjk;app;/opt/middleware/docker_wjk/bin/start.sh;/opt/middleware/docker_wjk/bin/stop.sh;/opt/middleware/docker_wjk/bin/restart.sh;health;http://localhost:8080/health
+wjkapi_prod;wjkapi;prod;wjk;spring;;;;;;;;
+multiapp_test;multiapp;test;multiple;docker;;;;;;;;
+multiapp_prod;multiapp;prod;multiple;docker;;;;;;;;
+;;;;;;;;;;;;

@@ -1,0 +1,12 @@
+##########################################
+## Middleware All in One deployment script TO DO
+## Author: lukacsr1
+## Date: 2020.03.17
+## Version: 0.0.8
+##########################################
+
+## author | date | version | messages
+lukacsr1 | 2021.03.17 | v0.0.8 | check search_pattern in csv missing
+lukacsr1 | 2021.03.17 | v0.0.8 | check appname in csv missing
+lukacsr1 | 2021.03.17 | v0.0.8 | check enviroment in csv missing
+lukacsr1 | 2021.03.17 | v0.0.8 | check projectname in csv missing

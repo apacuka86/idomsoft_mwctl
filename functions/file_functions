@@ -1,0 +1,110 @@
+#!/bin/bash
+
+### source
+#mwctlHome="/home/lukacsr1/skeleton"
+#source $functionsHome/log_functions
+
+function file.exists() {
+	if [ -f "$1" ]; then
+		level="INFO"
+		message="File: $1 exists!"
+		log.logging
+	else
+		level="ERROR"
+        message="File: $1 does not exist!"
+        echo "[$level] $message"
+        log.logging
+		echo "[ERROR] Exiting"
+        log.loggingEndWithError
+		exit
+	fi
+}
+### CSV parser function
+function file.csvparser() {
+    ### parameter explanation
+	# $1 - csv file
+	# $2 - search pattern
+	local csvArray=()
+	while IFS=";" read -r searchPattern appName appEnv appProject appProjectType appType appHome appUser appStart appStop appRestart appCheckType appCheckMethod
+	do
+		if [[ $searchPattern == $2 ]]; then
+			#echo "searchpattern : $searchPattern"
+			#echo "appname: $appName"
+			#echo "enviroment: $appEnv"
+			#echo "appproject: $appProject"
+			#echo "appprojecttype: $appProjectType"
+			#echo "apptype : $appType"
+			#echo "apphome: $appHome"
+			#echo "appuser: $appUser"
+			#echo "appstart: $appStart"
+			#echo "appstop: $appStop"
+			#echo "apprestart: $appRestart"
+			#echo "appchecktype: $appCheckType"
+			#echo "appcheckmethod: $appCheckMethod"
+			#echo ""
+			csvArray+=("$appName")
+			csvArray+=("$appEnv")
+			csvArray+=("$appProject")
+		fi
+	done < <(tail -n +2 $1)
+	level="INFO"
+    message="CSV parsing done!"
+	log.logging
+}
+### Get projects function
+getprojects=()
+function file.getprojects() {
+    ### parameter explanation
+	# $1 - csv file
+	while IFS=";" read -r searchPattern appName appEnv appProject appType appHome appUser appStart appStop appRestart appCheckType appCheckMethod
+	do
+		getprojects+=($appProject)
+	done < <(tail -n +2 $appscsv)
+	level="INFO"
+    message="CSV parsing done!"
+	log.logging
+	declare -A b
+	for i in "${getprojects[@]}"; do b["$i"]=1; done
+	printf '%s\n' "${!b[@]}" | sort
+	level="INFO"
+    message="Showing available projects:"
+	log.logging
+	for u in "${!b[@]}"
+	do
+		level=""
+		message="$u"
+		log.logging
+	done
+	log.loggingEnd
+	exit
+}
+### Get project apps function
+getprojectapps=()
+function file.getprojectapps() {
+    ### parameter explanation
+	# $1 - csv file
+	# $2 - project name
+	while IFS=";" read -r searchPattern appName appEnv appProject appType appHome appUser appStart appStop appRestart appCheckType appCheckMethod
+	do
+		if [[ $appProject == $2 ]]; then
+			getprojectapps+=($appName)
+		fi
+	done < <(tail -n +2 $1)
+	level="INFO"
+    message="CSV parsing done!"
+	log.logging
+	declare -A b
+	for i in "${getprojectapps[@]}"; do b["$i"]=1; done
+	printf '%s\n' "${!b[@]}" | sort
+	level="INFO"
+    message="Showing available project apps:"
+	log.logging
+	for u in "${!b[@]}"
+	do
+		level=""
+		message="$u"
+		log.logging
+	done
+	log.loggingEnd
+	exit
+}

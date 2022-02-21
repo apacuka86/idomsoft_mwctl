@@ -1,0 +1,123 @@
+#!/bin/bash
+appscsv="$toolsHome/apps.csv"
+
+function main.help() {
+	echo "Usage get help:"
+	echo "./$(basename "$0") -h[elp]"
+	echo "--------------------------------"
+	echo "ALL project application example:"
+	echo "--------------------------------"
+	echo "Usage to use all application without key:"
+	echo "./$(basename "$0") -p[roject] -a[pp] all -e[nv] {enviroment} -m[ethod]"
+	echo "Usage to use all application with key:"
+	echo "./$(basename "$0") -p[roject] -a[pp] all -e[nv] {enviroment} -m[ethod] -w[ith]k[ey]"
+	echo "--------------------------------"
+	echo "ONE project application example:"
+	echo "--------------------------------"
+	echo "Usage to use one application without key:"
+	echo "./$(basename "$0") -p[roject] -a[pp] {appName} -e[nv] {enviroment} -m[ethod]"
+	echo "Usage to use one application with key:"
+	echo "./$(basename "$0") -p[roject] -a[pp] {appName} -e[nv] {enviroment} -m[ethod] -w[ith]k[ey]"
+}
+### main program parameter check
+function main.parametercheck() {
+	### parameter explanation
+	# $1 - "-p[roject] or -h[elp] or -g[et]p[rojects] or -g[et]p[roject]a[pps]"
+	# $2 - "projectname"
+	# $3 - "-a[pp]"
+	# $4 - "appname"
+	# $5 - "-e[nv]"
+	# $6 - "enviroment"
+	# $7 - "m[ethod]"
+	# $8 - "method"
+	# $9 - "w[ith]k[ey]"
+	if [ -z "$1" ];then
+		echo "[ERROR] No argument supplied"
+		main.help
+		exit
+	fi
+    if [ "$1" == "-h" ] || [ "$1" == "-help" ];then
+		level="INFO"
+		message="Showing help menu!"
+        echo "[$level] $message"
+        log.logging
+        main.help
+        log.loggingEnd
+		exit
+	fi
+	## Parameter check
+	if [ "$1" == "-p" ] || [ "$1" == "-project" ] && [ "$3" == "-a" ] || [ "$3" == "-app" ] && [ "$5" == "-e" ] || [ "$5" == "-env" ] && [ "$7" == "-m" ] || [ "$7" == "-method" ]; then
+		level="INFO"
+        message="Parameters are good!"
+		log.logging
+	elif [ "$1" == "-gp" ] || [ "$1" == "-getprojects" ]; then
+		level="INFO"
+        message="Parameters are good!"
+		log.logging
+	elif [ "$1" == "-gpa" ] || [ "$1" == "-getprojectapps" ]; then
+		level="INFO"
+        message="Parameters are good!"
+		log.logging
+	else
+	    level="ERROR"
+        message="Bad parameters added!"
+        echo "[$level] $message"
+        log.logging
+		level="INFO"
+		message="Showing help menu!"
+        echo "[$level] $message"
+		log.logging
+        main.help
+        echo "[ERROR] Exiting"
+        log.loggingEndWithError
+		exit
+	fi
+}
+### get all projects
+function main.getprojects() {
+	file.getprojects $appscsv
+}
+### get all apps in a project
+function main.getprojectapps() {
+	file.getprojectapps $appscsv $2
+}
+### app local dir is exists
+function main.checkappdir() {
+	#$1 - searchPattern
+	#$2 - appName
+	#$3 - appEnv
+	#$4 - appProject
+	#$5 - appProjectType
+	#$6 - appType
+	while IFS=";" read -r searchPattern appName appEnv appProject appProjectType appType appHome appUser appStart appStop appRestart appCheckType appCheckMethod
+	do
+		if [[ "$searchValue" == "$searchPattern" ]]; then
+			appdir=""
+			if [[ "$appProjectType" == "simple"  ]];then
+				#/home/lukacsr1/skeleton/applications/wjk/wjkapi_prod
+				appdir="$applicationsHome/$appProject/$appName"_"$appEnv/"
+				dir.exists $appdir
+				level="INFO"
+				message="App local directory exists: $appdir"
+				echo "[$level] $message"
+				log.logging
+			elif [[ "$appProjectType" == "multiple"  ]];then
+				#/home/lukacsr1/skeleton/applications/multiple/prod/multiapp
+				appdir="$applicationsHome/$appProject/$appEnv/$appName/"
+				dir.exists $appdir
+				level="INFO"
+				message="App local directory exists: $appdir"
+				echo "[$level] $message"
+				log.logging
+			else
+				level="ERROR"
+				message="Wrong project type in apps csv!!! Possible: simple or multiple"
+				echo "[$level] $message"
+				log.logging
+				echo "[ERROR] Exiting"
+				log.loggingEndWithError
+				exit
+			fi
+		fi
+	done < <(tail -n +2 $appscsv)
+}

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+### source
+#mwctlHome="/home/lukacsr1/skeleton"
+#source $functionsHome/log_functions
+
+function dir.exists() {
+	if [ -d "$1" ]; then
+		level="INFO"
+		message="Dir: $1 exists!"
+		log.logging
+	else
+		level="ERROR"
+        message="Dir: $1 does not exist!"
+        echo "[$level] $message"
+        log.logging
+		echo "[ERROR] Exiting"
+        log.loggingEndWithError
+		exit
+	fi
+}

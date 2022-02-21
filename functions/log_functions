@@ -1,0 +1,56 @@
+#!/bin/bash
+
+#### Logging
+# logformat help: mwctl_date.log
+# logformat app: mwctl_appname_date.log
+
+function log.logFileName () {
+	if [[ -z "$1" ]]; then
+		logFile="mwctl_${logDate}.log"
+	elif [ "$1" == "-h" ] || [ "$1" == "-help" ]; then
+		logFile="mwctl_help_${logDate}.log"
+	elif [ "$1" == "-gp" ] || [ "$1" == "-getprojects" ]; then
+		logFile="mwctl_getprojects_${logDate}.log"
+	elif [ "$1" == "-gpa" ] || [ "$1" == "-getprojectapps" ]; then
+		logFile="mwctl_getprojectapps_${logDate}.log"
+	else
+		logFile="mwctl_${project}_${application}_${enviroment}_${logDate}.log"
+	fi
+}
+
+function log.loggingStart () {
+  echo "###############################################################" >> "$logsHome/$logFile"
+  echo "$date p=$pid u=$username |   [INFO]:  Starting middleware mwctl script with the following parameters:" >> "$logsHome/$logFile"
+  echo "$date p=$pid u=$username |   [INFO]:  Project:     $project" >> "$logsHome/$logFile"
+  echo "$date p=$pid u=$username |   [INFO]:  Application: $application" >> "$logsHome/$logFile"
+  echo "$date p=$pid u=$username |   [INFO]:  Enviroment:  $enviroment" >> "$logsHome/$logFile"
+  echo "" >> "$logsHome/$logFile"
+}
+
+function log.logging () {
+  echo "$date p=$pid u=$username |   [$level]: $message" >> "$logsHome/$logFile"
+}
+
+function log.loggingAnsible () {
+  echo "" >> "$logsHome/$logFile"
+  echo "" >> "$logsHome/$logFile"
+  echo "$date p=$pid u=$username |   [INFO]: Let's play" >> "$logsHome/$logFile"
+  echo "" >> "$logsHome/$logFile"
+  echo "" >> "$logsHome/$logFile"
+  cat "$logsHome/ansible.log" >> "$logsHome/$logFile"
+  echo "" > "$logsHome/ansible.log"
+}
+
+function log.loggingEnd () {
+  echo "" >> "$logsHome/$logFile"
+  echo "$date p=$pid u=$username |   [INFO]: Finished" >> "$logsHome/$logFile"
+  echo "" >> "$logsHome/$logFile"
+  echo "" >> "$logsHome/$logFile"
+}
+
+function log.loggingEndWithError () {
+  echo "" >> "$logsHome/$logFile"
+  echo "$date p=$pid u=$username |   [ERROR]: Finished with errors!!!" >> "$logsHome/$logFile"
+  echo "" >> "$logsHome/$logFile"
+  echo "" >> "$logsHome/$logFile"
+}

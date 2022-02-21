@@ -1,0 +1,21 @@
+##########################################
+## Middleware All in One deployment script 
+## RELEASE NOTES
+## Author: lukacsr1
+## Date: 2022.02.11
+## Version: 0.0.12
+##########################################
+
+## author | date | version | messages
+lukacsr1 | 2020.11.28 | v0.0.1  | new base structure created
+lukacsr1 | 2021.01.19 | v0.0.2  | functions moved to functions folder
+lukacsr1 | 2021.01.19 | v0.0.3  | basic logging methods created
+lukacsr1 | 2021.01.23 | v0.0.4  | new apps.csv structure implemented
+lukacsr1 | 2021.01.23 | v0.0.5  | file and dir checker implemented
+lukacsr1 | 2021.03.17 | v0.0.6  | new required parameter added (projectname)
+lukacsr1 | 2021.03.17 | v0.0.7  | get projects function implemented
+lukacsr1 | 2021.03.17 | v0.0.8  | check local app folder function implemented
+lukacsr1 | 2021.07.21 | v0.0.9  | multiple project option removed
+lukacsr1 | 2021.07.21 | v0.0.10 | make better help menu
+lukacsr1 | 2021.07.21 | v0.0.11 | check recived method from command line implemented
+lukacsr1 | 2022.02.11 | v0.0.12 | check directory problem solved

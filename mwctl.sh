@@ -9,7 +9,7 @@
 
 ##########################################
 # variables layer
-mwctlHome="/home/lukacsr1/skeleton"
+mwctlHome="F:\Project\mwctl\idomsoft_mwctl"
 playbooksHome="$mwctlHome/playbooks"
 toolsHome="$mwctlHome/tools"
 functionsHome="$mwctlHome/functions"
